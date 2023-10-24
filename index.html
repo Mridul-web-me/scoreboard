@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Scoreboard</title>
+  </head>
+  <body>
+    <h1>Scoreboard</h1>
+
+    <input type="text" id="playerName" placeholder="Player Name" />
+    <input type="number" id="playerRun" placeholder="Player Run" />
+    <button onclick="addPlayer()">Add Player</button>
+
+    <h2>Player List:</h2>
+    <ul id="playerList"></ul>
+
+    <button onclick="showResults()">Result</button>
+
+    <h2>Result:</h2>
+    <p>Total Run: <span id="totalRun">0</span></p>
+    <p>Highest Run: <span id="highestPlayerName"></span>, <span id="highestPlayerRun"></span></p>
+    <p>Lowest Run: <span id="lowestPlayerName"></span>, <span id="lowestPlayerRun"></span></p>
+
+    <script>
+      let players = [];
+
+      function addPlayer() {
+        if (players.length >= 5) {
+          alert("You can't add more than 5 players.");
+          return;
+        }
+
+        const playerName = document.getElementById('playerName').value;
+        const playerRun = parseInt(document.getElementById('playerRun').value);
+
+        if (playerName && !isNaN(playerRun)) {
+          players.push({ name: playerName, run: playerRun });
+          document.getElementById('playerList').innerHTML += `<li>${playerName}: ${playerRun} runs</li>`;
+          document.getElementById('playerName').value = '';
+          document.getElementById('playerRun').value = '';
+        }
+      }
+
+      function showResults() {
+        const totalRun = players.reduce((total, player) => total + player.run, 0);
+        document.getElementById('totalRun').textContent = totalRun;
+
+        const highestPlayerRun = players.reduce((max, player) => (player.run > max.run ? player : max), players[0]);
+        document.getElementById('highestPlayerName').textContent = highestPlayerRun.name;
+        document.getElementById('highestPlayerRun').textContent = highestPlayerRun.run;
+
+        const lowestPlayerRun = players.reduce((min, player) => (player.run < min.run ? player : min), players[0]);
+        document.getElementById('lowestPlayerName').textContent = lowestPlayerRun.name;
+        document.getElementById('lowestPlayerRun').textContent = lowestPlayerRun.run;
+      }
+    </script>
+  </body>
+</html>
